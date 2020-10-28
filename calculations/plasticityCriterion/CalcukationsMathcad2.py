@@ -185,7 +185,7 @@ class Mathcad:
 
 if __name__ == "__main__":
     m = Mathcad()
-    length = 6
+    length = 5
 
     # points = [Point(4, -1.685, 2.076, 1), Point(2, -1.685, 2.076, 1)]
     # points = [Point(-0.315, -5.418, 2.747, 0.678), Point(-1.778, -4.729, 2.602, 0.76)]
@@ -204,7 +204,7 @@ if __name__ == "__main__":
         for idx, point in enumerate(mass[i]):
             if(idx + 1 >= len(mass[i])):
                 continue
-            print(mass[i][idx+1], point)
+            # print(mass[i][idx+1], point)
             res = m.calcSymb(mass[i][idx+1], point)
             if(res != None):
                 mass[i+1].append(res)
