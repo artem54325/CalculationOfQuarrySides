@@ -120,6 +120,8 @@ class Mathcad:
         y = sym.Symbol('y')
         p = sym.Symbol('p')
         q = sym.Symbol('q')
+        alpha = sym.Symbol('alpha')
+        betta = sym.Symbol('betta')
 
         f = 0.577
         u = 1
@@ -134,80 +136,49 @@ class Mathcad:
         g = Point2.getP()
         h = Point2.getQ()
 
-        # x = -2.23
-        # y = -6.36
+        calc1 = sym.cos(2 * (-1) * sym.atan((x - n) / (y - m))) - q # Первое уравнение
+        calc2 = (x-a) * (((f-2*p) * ((1-q*q)**(1/2))+2*((f*f*q*q*(1-q*q)+p*(p-f))**(1/2)))/(2*f*q*q+(2*p-f)*q-f))-(y-b)# Второе уравнение
+        calc3 = (((2*p-f*(1+2*q))/(f-p))*(q-b) + (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-(4*(p-c)/f))# Средняя уравнение
+        calc4 = (1 + (f * ((p * p - 1) / f)))**(1/2) - p    #(1 + (f * ((p * p-1) / f)) / 1)**(1/2) - p # (1+(f*((p*p-1)/f)))# Четвертое уравнение
+        calc5 = ((p * p - 1) / f) - alpha
+        calc6 = ((p * p - 1) / f - 2 * p) - betta
 
-        calc3 = sym.cos(2 * (-1) * sym.atan((x - n) / (y - m))) - q
-        calc1 = (x-a) * (((f-2*p) * ((1-q*q)**(1/2))+2*((f*f*q*q*(1-q*q)+p*(p-f))**(1/2)))/(2*f*q*q+(2*p-f)*q-f))-(y-b)
-        calc2 = (((2*p-f*(1+2*q))/(f-p))*(q-b) + (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-(4*(p-c)/f))
-        calc4 = (1+(f*((p*p-1)/f)))
-        result = sym.nsolve([calc1, calc2, calc3, calc4], [x, y, p, q], [-2.23, -6.36, 2.76, 0.8], verify=False)# ((a+n)/2), ((b+m)/2), ((c+g)/2), ((d+h)/2-0.1)
-        print('result = ', result)
+        answer = sym.nsolve([calc1, calc2, calc3, calc4, calc5, calc6], [x, y, p, q, alpha, betta], [-0.475, -1.568, 2.115, 0.832, 6.015, 1.785])
+        # print('result = ', result)
+        # alpha = 1*(p * p - 1) / f
+        # betta = (p * p -1)/f - 2 * p
 
-        alpha = 1*(p * p - 1) / f
-        betta = (p * p -1)/f - 2 * p
-
-        print(q, alpha, betta)
-    # def calcSymbWithAngle2(self, Point1, Point2):
-    #     x = sym.Symbol('x')
-    #     y = sym.Symbol('y')
-    #     p = sym.Symbol('p')
-    #     q = sym.Symbol('q')
-    #
-    #     f = 0.577
-    #     u = 1
-    #
-    #     a = Point1.getX()
-    #     b = Point1.getY()
-    #     c = Point1.getP()
-    #     d = Point1.getQ()
-    #
-    #     n = Point2.getX()
-    #     m = Point2.getY()
-    #     g = Point2.getP()
-    #     h = Point2.getQ()
-    #
-    #     # x = -2.23
-    #     # y = -6.36
-    #
-    #     calc3 = sym.cos(2 * (-1) * sym.atan((x - n) / (y - m))) - q
-    #     calc1 = (x-a) * (((f-2*p) * ((1-q*q)**(1/2))+2*((f*f*q*q*(1-q*q)+p*(p-f))**(1/2)))/(2*f*q*q+(2*p-f)*q-f))-(y-b)
-    #     calc2 = (((2*p-f*(1+2*q))/(f-p))*(q-b) + (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-(4*(p-c)/f))
-    #     calc4 = (1+(f*((p*p-1)/f)))
-    #     result = sym.nsolve([calc1, calc2, calc3, calc4], [x, y, p, q], [-2.23, -6.36, 2.76, 0.8], verify=False)# ((a+n)/2), ((b+m)/2), ((c+g)/2), ((d+h)/2-0.1)
-    #     print('result = ', result)
-    #
-    #     alpha = 1*(p * p - 1) / f
-    #     betta = (p * p -1)/f - 2 * p
-    #
-    #     print(q, alpha, betta)
+        # print(q, alpha, betta)
+        print(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
+        return Point(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
 
 
 if __name__ == "__main__":
     m = Mathcad()
     length = 5
 
-    # points = [Point(4, -1.685, 2.076, 1), Point(2, -1.685, 2.076, 1)]
+    points = [Point(1, -0.836, 1.913, 1), Point(0, 0, 1.732, 1)]
     # points = [Point(-0.315, -5.418, 2.747, 0.678), Point(-1.778, -4.729, 2.602, 0.76)]
     # points = [Point(10, 0.0, 1.732, 1),
     #           Point(8, 0.0, 1.732, 1)]
-    # print(m.calcSymbExample(points[1], points[0]))
+    check = m.calcSymbWithAngle(points[1], points[0])
+    # print(check)
 
     # add mass
-    mass = []
-    mass.append([])
-    for i in range(0, length):
-        mass[0].append(Point(i*2, 0,1.732, 1))
-    # calculations
-    for i in range(0, length):
-        mass.append([])
-        for idx, point in enumerate(mass[i]):
-            if(idx + 1 >= len(mass[i])):
-                continue
-            # print(mass[i][idx+1], point)
-            res = m.calcSymb(mass[i][idx+1], point)
-            if(res != None):
-                mass[i+1].append(res)
-
-    for idx, point in enumerate(mass):
-        print(point)
+    # mass = []
+    # mass.append([])
+    # for i in range(0, length):
+    #     mass[0].append(Point(i*2, 0,1.732, 1))
+    # # calculations
+    # for i in range(0, length):
+    #     mass.append([])
+    #     for idx, point in enumerate(mass[i]):
+    #         if(idx + 1 >= len(mass[i])):
+    #             continue
+    #         # print(mass[i][idx+1], point)
+    #         res = m.calcSymb(mass[i][idx+1], point)
+    #         if(res != None):
+    #             mass[i+1].append(res)
+    #
+    # for idx, point in enumerate(mass):
+    #     print(point)
