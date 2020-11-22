@@ -123,6 +123,13 @@ class Mathcad:
         alpha = sym.Symbol('alpha')
         betta = sym.Symbol('betta')
 
+        # x = -0.475
+        # y = -1.568
+        # p = 2.115
+        # q = 0.832
+        # alpha = 6.015
+        # betta = 1.785
+
         f = 0.577
         u = 1
 
@@ -136,21 +143,39 @@ class Mathcad:
         g = Point2.getP()
         h = Point2.getQ()
 
-        calc1 = sym.cos(2 * (-1) * sym.atan((x - n) / (y - m))) - q # Первое уравнение
-        calc2 = (x-a) * (((f-2*p) * ((1-q*q)**(1/2))+2*((f*f*q*q*(1-q*q)+p*(p-f))**(1/2)))/(2*f*q*q+(2*p-f)*q-f))-(y-b)# Второе уравнение
-        calc3 = (((2*p-f*(1+2*q))/(f-p))*(q-b) + (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-(4*(p-c)/f))# Средняя уравнение
-        calc4 = (1 + (f * ((p * p - 1) / f)))**(1/2) - p    #(1 + (f * ((p * p-1) / f)) / 1)**(1/2) - p # (1+(f*((p*p-1)/f)))# Четвертое уравнение
+        # print((((f-2*p)*(1-q*q)**(1/2)+2*(f*f*q*q*(1-q*q)+p*(p-f))**(1/2))/((f-p)*(1-q*q)**(1/2))))
+        # print((u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)))
+        # print((u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2))))
+        # print((((2*p-f*(1+2*q))/(f-p))*(q-d) + (((f-2*p)*(1-q*q)**(1/2)+2*(f*f*q*q*(1-q*q)+p*(p-f))**(1/2))/((f-p)*(1-q*q)**(1/2)))*(q-d) +
+        #          (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))))
+        #
+        # print((1 + (f * ((p * p - 1) / f)))**(1/2))
+        # print(p, f)
+        # print(((p * p - 1) / f), 6.016)
+        # print(((p * p - 1) / f - 2 * p), 1.786)
+
+        # Первое уравнение
+        calc1 = sym.cos(2 * (-1) * sym.atan((x - n) / (y - m))) - q
+
+        # Второе уравнение
+        calc2 = (x-a) * (((f-2*p) * ((1-q*q)**(1/2))+2*((f*f*q*q*(1-q*q)+p*(p-f))**(1/2)))/(2*f*q*q+(2*p-f)*q-f))-(y-b)
+
+        # Средняя уравнение
+        calc3 = (((2*p-f*(1+2*q))/(f-p))*(q-d) + (((f-2*p)*(1-q*q)**(1/2)+2*(f*f*q*q*(1-q*q)+p*(p-f))**(1/2))/((f-p)*(1-q*q)**(1/2)))*(q-d) +
+                 (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-(4*(p-c)/f))
+
+        # Четвертое уравнение
+        calc4 = (1 + (f * alpha))**(1/2) - p    #(1 + (f * ((p * p-1) / f)) / 1)**(1/2) - p # (1+(f*((p*p-1)/f)))
+
         calc5 = ((p * p - 1) / f) - alpha
+
         calc6 = ((p * p - 1) / f - 2 * p) - betta
 
-        answer = sym.nsolve([calc1, calc2, calc3, calc4, calc5, calc6], [x, y, p, q, alpha, betta], [-0.475, -1.568, 2.115, 0.832, 6.015, 1.785])
-        # print('result = ', result)
-        # alpha = 1*(p * p - 1) / f
-        # betta = (p * p -1)/f - 2 * p
 
-        # print(q, alpha, betta)
+        answer = sym.nsolve([calc1, calc2, calc3, calc4, calc5, calc6], [x, y, p, q, alpha, betta], [-0.476, -1.568, 2.115, 0.831, 6.015, 1.785])
         print(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
         return Point(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
+
 
 
 if __name__ == "__main__":
@@ -161,7 +186,7 @@ if __name__ == "__main__":
     # points = [Point(-0.315, -5.418, 2.747, 0.678), Point(-1.778, -4.729, 2.602, 0.76)]
     # points = [Point(10, 0.0, 1.732, 1),
     #           Point(8, 0.0, 1.732, 1)]
-    check = m.calcSymbWithAngle(points[1], points[0])
+    check = m.calcSymbWithAngle(points[0], points[1])
     # print(check)
 
     # add mass
