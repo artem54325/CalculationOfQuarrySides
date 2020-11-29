@@ -161,6 +161,51 @@ class Mathcad:
         return Point(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
 
 
+    def calcSymbExample2(self, Point1, Point2):
+        x = sym.Symbol('x')
+        y = sym.Symbol('y')
+        p = sym.Symbol('p')
+        q = sym.Symbol('q')
+
+        f = 0.577
+        u = 1
+
+        a = Point1.getX()
+        b = Point1.getY()
+        c = Point1.getP()
+        d = Point1.getQ()
+
+        n = Point2.getX()
+        m = Point2.getY()
+        g = Point2.getP()
+        h = Point2.getQ()
+
+        calc12Plus = (x - a) * (((f - 2 * p) * (1 - q * q)**(1/2) +
+                                 (2 * (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2))) /
+                                (2 * f * q * q + (2 * p - f) * q - f)) - (y - b)
+
+        calc12minus = (x - n) * (((f - 2 * p) * (1 - q * q)**(1/2) -
+                                 (2 * (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2))) /
+                                (2 * f * q * q + (2 * p - f) * q - f)) - (y - m)
+
+        calc14minus = ((2 * p - f * (1 + 2 * q)) / (f - p) * (q - d) +
+                                    ((f - 2 * p) * (1 - q * q)**(1/2) + 2 *
+                                     (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2)) /
+                                    (1 * (f - p) * ((1 - q * q)**(1/2))) * (q - d) +
+                                    (u * (y - b) * (2 * p + (q - 1) * f)) / ((f - p) * p) +
+                                    (u * (x - a) * (q * q - 1) * f) / (1 * p * (f - p) * (1 - q * q)**(1/2))) - ((4 * (p - c)) / (f))
+
+        calc14plus = ((2 * p - f * (1 + 2 * q)) / (f - p) * (q - h) +
+                                    ((f - 2 * p) * (1 - q * q)**(1/2) - 2 *
+                                    (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2)) /
+                                    (1 * (f - p) * ((1 - q * q)**(1/2))) * (q - h) +
+                                    (u * (y - b) * (2 * p + (q - 1) * f)) / ((f - p) * p) +
+                                    (u * (x - a) * (q * q - 1) * f) / (1 * p * (f - p) * (1 - q * q)**(1/2))) - ((4 * (p - g)) / (f))
+
+        answer = sym.nsolve([calc12Plus, calc12minus, calc14minus, calc14plus], [x, y, p, q], [9, -0.836, 1.913, 0.9])
+
+
+        return Point(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
 
 if __name__ == "__main__":
     m = Mathcad()
