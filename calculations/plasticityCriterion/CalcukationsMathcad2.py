@@ -1,5 +1,6 @@
 import math
 
+import numpy
 import sympy as sym
 import z3 as z3
 
@@ -10,7 +11,7 @@ from scipy.optimize import fsolve
 
 class Mathcad:
 
-    def __init__(self, f=0.577, u=1):
+    def __init__(self, f=math.tan(30*math.pi/180), u=1):
         self.f = f
         self.u = u
 
@@ -166,15 +167,15 @@ class Mathcad:
         f = self.f
         u = self.u
 
-        a = round(float(Point1.getX()),3)# Point1.getX()
-        b = round(float(Point1.getY()),3)# Point1.getY()
-        c = round(float(Point1.getP()),3)# Point1.getP()
-        d = round(float(Point1.getQ()),3)# Point1.getQ()
+        a = round(float(Point1.getX()),4)# Point1.getX()
+        b = round(float(Point1.getY()),4)# Point1.getY()
+        c = round(float(Point1.getP()),4)# Point1.getP()
+        d = round(float(Point1.getQ()),4)# Point1.getQ()
 
-        n = round(float(Point2.getX()),3)# Point2.getX()
-        m = round(float(Point2.getY()),3)# Point2.getY()
-        g = round(float(Point2.getP()),3)# Point2.getP()
-        h = round(float(Point2.getQ()),3)# Point2.getQ()
+        n = round(float(Point2.getX()),4)# Point2.getX()
+        m = round(float(Point2.getY()),4)# Point2.getY()
+        g = round(float(Point2.getP()),4)# Point2.getP()
+        h = round(float(Point2.getQ()),4)# Point2.getQ()
 
 
         # Первое уравнение
@@ -184,24 +185,26 @@ class Mathcad:
         calc2 = (x-a) * (((f-2*p) * ((1-q*q)**(1/2))+2*((f*f*q*q*(1-q*q)+p*(p-f))**(1/2)))/(2*f*q*q+(2*p-f)*q-f))-(y-b)
 
         # Средняя уравнение
-        calc3 = (((2*p-f*(1+2*q))/(f-p))*(q-d) + (((f-2*p)*(1-q*q)**(1/2)+2*(f*f*q*q*(1-q*q)+p*(p-f))**(1/2))/((f-p)*(1-q*q)**(1/2)))*(q-d) +
-                 (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) + (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-(4*(p-c)/f))
+        calc3 = (((2*p-f*(1+2*q))/(f-p))*(q-d) +
+                 (((f-2*p)*(1-q*q)**(1/2)+2*(f*f*q*q*(1-q*q)+p*(p-f))**(1/2))/((f-p)*(1-q*q)**(1/2)))*(q-d) +
+                 (u*(y-b)*(2*p+(q-1)*f)/((f-p)*p)) +
+                 (u*(x-a)*((q*q-1)*f)/(p*(f-p)*(1-q*q)**(1/2)))-
+                 (4*(p-c)/f))
 
         # Четвертое уравнение
-        calc4 = (1 + (f * alpha))**(1/2) - p    #(1 + (f * ((p * p-1) / f)) / 1)**(1/2) - p # (1+(f*((p*p-1)/f)))
+        calc4 = (1 + (f * alpha))**(1/2) - p
 
+        # Пятое уравнение
         calc5 = ((p * p - 1) / f) - alpha
 
-        calc6 = ((p * p - 1) / f - 2 * p) - betta
-
-        # pointExample = Point(-0.476, -1.568, 2.115, 0.831, 6.015, 1.785)
-        # pointExample = Point((Point1.getX()+Point2.getX())/2, (Point1.getY()+Point2.getY())/2,(Point1.getP()+Point2.getP())/2,(Point1.getQ()+Point2.getQ())/3,
-        #                      (Point1.getAlpha(f)+Point2.getAlpha(f))/2,(Point1.getBetta(f)+Point2.getBetta(f))/2)
+        # Шестое уравнение
+        calc6 = (alpha - 2 * p) - betta
 
         answer = sym.nsolve([calc1, calc2, calc3, calc4, calc5, calc6],
                             [x, y, p, q, alpha, betta],
                             [pointFind.getX(), pointFind.getY(), pointFind.getP(),pointFind.getQ(),pointFind.getAlpha(f),pointFind.getBetta(f)],
                             verify = False)
+        # answer = numpy.ndarray(answer, dtype=float, order='F')
         return Point(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
 
 
@@ -263,10 +266,10 @@ class Mathcad:
         return Point(round(abs(answer[0]), 5), round(abs(answer[1]), 5), round(abs(answer[2]), 5), round(abs(answer[3]), 5))
 
     def calcSymb3(self, Point1, Point2):
-        x = sym.Symbol('x')
-        y = sym.Symbol('y')
-        p = sym.Symbol('p')
-        q = sym.Symbol('q')
+        x = sym.Symbol('x')#0.129#sym.Symbol('x')
+        y = sym.Symbol('y')#-2.622#sym.Symbol('y')
+        p = sym.Symbol('p')#2.296#sym.Symbol('p')
+        q = sym.Symbol('q')#0.833#sym.Symbol('q')
 
         f = self.f
         u = self.u
@@ -289,7 +292,8 @@ class Mathcad:
                                  (2 * (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2))) /
                                 (2 * f * q * q + (2 * p - f) * q - f)) - (y - m)
 
-        calc14plus = (((2 * p - f * (1 + 2 * q)) / (f - p) * (q - d) +
+
+        calc14plus = ((2 * p - f * (1 + 2 * q)) / (f - p) * (q - d) +
 
                     ((f - 2 * p) * (1 - q * q)**(1/2) +
                      2 * (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2)) /
@@ -297,8 +301,10 @@ class Mathcad:
 
                     (u * (y - b) * (2 * p + (q - 1) * f)) / ((f - p) * p) +
 
-                    (u * (x - a) * (q * q - 1) * f) / (1 * p * (f - p) * (1 - q * q)**(1/2))) -
+                    (u * (x - a) * (q * q - 1) * f) / (1 * p * (f - p) * (1 - q * q)**(1/2)) -
+
                     ((4 * (p - c)) / (f)))
+
 
         calc14minus = ((((2 * p - f * (1 + 2 * q)) / (f - p)) * (q - h) +
 
@@ -306,19 +312,19 @@ class Mathcad:
                      2 * (f * f * q * q * (1 - q * q) + p * (p - f))**(1/2)) /
                     (1 * (f - p) * ((1 - q * q)**(1/2))) * (q - h) +
 
-                    (u * (y - b) * (2 * p + (q - 1) * f)) / ((f - p) * p) +
+                    (u * (y - m) * (2 * p + (q - 1) * f)) / ((f - p) * p) +
 
-                    (u * (x - a) * (q * q - 1) * f) / (1 * p * (f - p) * (1 - q * q)**(1/2))) -
+                    (u * (x - n) * (q * q - 1) * f) / (1 * p * (f - p) * (1 - q * q)**(1/2))) -
 
-                    ((4 * (p - g)) / (f)))
+                    ((4 * (p - g)) / f))
 
         answer = sym.nsolve([calc12Plus, calc12minus, calc14minus, calc14plus],
                             [x, y, p, q],
                             [((a+n)/2), ((b+m)/2), ((c+g)/2), ((d+h)/2-0.1)],
                             # [0.129, -2.622, 2.296, 0.833],
-                            verify = True)
+                            verify = False)
 
-        return Point(round(answer[0], 5), round(answer[1], 5), round(answer[2], 5), round(answer[3], 5))
+        return Point(round(answer[0], 8), round(answer[1], 8), round(answer[2], 8), round(answer[3], 8))
 
 if __name__ == "__main__":
     m = Mathcad()
@@ -327,19 +333,53 @@ if __name__ == "__main__":
                   Point(-1.186, -3.128, 2.421, 0.655, 8.422, 3.58),
                   Point(-1.778, -4.729, 2.02, 0.76, 9.998, 4.793),
                   Point(-2.241, -6.363, 2.767, 0.851, 11.528, 5.994)]
+
     # Point(10, 0, 1.732, 1)
     # Point(12, 0, 1.732, 1)
-    # points1 = [Point(10, 0, 1.732, 1), Point(12, 0, 1.732, 1)]
-    # answer = m.calcSymb2(points1[1],points1[0])
-    # print(answer)
-    #
+    # points1 = [Point(-0.475, -1.568, 2.115, 0.832), Point(2, -1.685, 2.076, 1)] #    0.129, -2.622, 2.296, 0.833
+
     # answer = m.calcSymb(points1[1],points1[0])
     # print(answer)
+    #
+    # answer = m.calcSymb2(points1[1], points1[0])
+    # print(answer)
 
-    # points2 = [Point(1, -0.836, 1.913, 1, 4.607, 1.785), Point(2, -1.685, 2.076, 1, 5.733,1.581)]
+    # answer = m.calcSymb3(points1[1], points1[0])
+    # print(answer)
+
+    # points2 = [Point(-0.475, -1.568, 2.115, 0.832, 7.395, 1.781), Point(2, -1.685, 2.076, 1, 5.73,1.578)]
     # pw = Point(0.129, -2.622, 2.296, 0.833)
-    # answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    # answer2 = m.calcSymb3(points2[1], points2[0])
     # print(answer2)
+
+    # print(Point(1, -0.836, 1.913, 1))
+
+
+    #Test
+    points2 = [Point(0.0, 0.0, 1.732, 1), Point(1, -0.836, 1.913, 1)]
+    pw = pointsFind[0]
+    print(points2)
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print(answer2, pw)
+
+    points2 = [Point(-0.475, -1.568, 2.115, 0.832), Point(0.129, -2.622, 2.296, 0.833)]
+    pw = pointsFind[1]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print(answer2, pw)
+
+    points2 = [Point(-1.186, -3.128, 2.421, 0.655), Point(-0.757, -4.271, 2.59, 0.668)]
+    pw = pointsFind[2]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print(answer2, pw)
+
+    points2 = [Point(-1.778, -4.729, 2.6025, 0.76), Point(-1.246, -5.841, 2.754, 0.766)]
+    pw = pointsFind[3]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print(answer2, pw)
+
+    # m1 = {Point} <x:0.116 y:-2.6223 p:2.2972 q:0.8287 a1:7.4127 a2:2.8183>
+    # m2 = {Point} <x:-0.4826 y:-1.5652 p:2.115 q:0.8264 a1:6.0191 a2:1.7892>
+    # find = {Point} <x:-0.475 y:-1.568 p:2.115 q:0.831 a1:6.0195 a2:1.7895>
 
     # # points = [Point(-0.315, -5.418, 2.747, 0.678), Point(-1.778, -4.729, 2.602, 0.76)]
     # # points = [Point(10, 0.0, 1.732, 1),
@@ -357,23 +397,26 @@ if __name__ == "__main__":
 
     mass = []
     mass.append([])
+    leftNumber = 1
     for i in range(0, length):
         mass[0].append(Point(i * 2, 0, 1.732, 1))
     # calculations
     for i in range(0, length):
         mass.append([])
 
-        # if(len(mass)>=3 & i%2 == 1):
-        #     m1 = mass[i][0]
-        #     m2 = mass[i-1][0]
-        #     res = m.calcSymbWithAngle(m1, m2, pointsFind[i-1])
-        #     print(res)
-        #     mass[i+1].append(res)
+        if(len(mass)>=3 & i % 2 == 1):
+            m1 = mass[i][0]
+            if(i == 3):
+                m1 = pointsFind[i-leftNumber-1]
+            m2 = mass[i-1][0]
+            find = pointsFind[i-leftNumber]
+            res = m.calcSymbWithAngle(m1, m2, find)
+            mass[i+1].append(res)
+            leftNumber = leftNumber + 1
 
         for idx, point in enumerate(mass[i]):
             if(idx + 1 >= len(mass[i])):
                 continue
-            # print(mass[i][idx+1], point)
             prevPoint = mass[i][idx+1]
             res = m.calcSymb3(prevPoint, point)
             if(res != None):

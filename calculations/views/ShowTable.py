@@ -15,8 +15,11 @@ class ShowTable:
         y = []
         for idPoints, points in enumerate(massPoints):
             for id, point in enumerate(points):
-                x.append(point.getX())
-                y.append(point.getY())
+                x.append(idPoints)
+                y.append(id)
+                point.setTable(idPoints,id)
+                # x.append(point.getX())
+                # y.append(point.getY())
 
         fig, ax = plt.subplots()
 
@@ -38,5 +41,7 @@ class ShowTable:
     def searchPoint(self, massPoints, y, x):
         for idPoints, points in enumerate(massPoints):
             for id, point in enumerate(points):
-                if(x == point.getX() and y == point.getY()):
+                # if(x == point.getX() and y == point.getY()):
+                #     return point
+                if (x == point.tableX and y == point.tableY):
                     return point
