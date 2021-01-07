@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mplcursors
 
+from helpers import parsFloat
+
 
 class ShowTable:
     def showTable(self, massPoints):
@@ -13,18 +15,27 @@ class ShowTable:
         # y - координаты точек
         x = []
         y = []
+        ky = 0
+        kx = 0
+
         for idPoints, points in enumerate(massPoints):
             for id, point in enumerate(points):
-                x.append(idPoints)
-                y.append(id)
-                point.setTable(idPoints,id)
-                # x.append(point.getX())
-                # y.append(point.getY())
+                if(idPoints % 2 == 1):
+                    ky = 2
+                    kx = 0
+                else:
+                    kx = 1
+                    ky=0
+
+                dx = idPoints + id - kx
+                dy = id - idPoints + ky + kx
+                x.append(dx)# высота
+                y.append(dy)# длина
+                point.setTable(dx,dy)
 
         fig, ax = plt.subplots()
 
-        ax.scatter(x, y,
-                  c='#ad09a3')  # цвет точек
+        ax.scatter(x, y, c='#ad09a3')  # цвет точек
 
         ax.set_title('Расчет бортов карьеров на обрушения')  # заголовок для Axes
 
@@ -43,5 +54,8 @@ class ShowTable:
             for id, point in enumerate(points):
                 # if(x == point.getX() and y == point.getY()):
                 #     return point
-                if (x == point.tableX and y == point.tableY):
-                    return point
+                try:
+                    if (x == point.tableX and y == point.tableY):
+                        return point
+                except Exception:
+                    print("errror nulll")
