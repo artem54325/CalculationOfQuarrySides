@@ -177,7 +177,6 @@ class Mathcad:
         g = round(float(Point2.getP()),4)# Point2.getP()
         h = round(float(Point2.getQ()),4)# Point2.getQ()
 
-
         # Первое уравнение
         calc1 = sym.cos(-2 * sym.atan((x - n) / (y - m))) - q
 
@@ -331,32 +330,32 @@ class Mathcad:
 
 if __name__ == "__main__":
     m = Mathcad()
-    length = 6
+    length = 5
     pointsFind = [Point(-0.475, -1.568, 2.115, 0.831, 6.015, 1.785),
                   Point(-1.186, -3.128, 2.421, 0.655, 8.422, 3.58),
                   Point(-1.778, -4.729, 2.02, 0.76, 9.998, 4.793),
                   Point(-2.241, -6.363, 2.767, 0.851, 11.528, 5.994)]
 
     #Test
-    # points2 = [Point(0.0, 0.0, 1.732, 1), Point(1, -0.836, 1.913, 1)]
-    # pw = pointsFind[0]
-    # answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
-    # print('\n', answer2,'\n', pw)
-    #
-    # points2 = [Point(-0.475, -1.568, 2.115, 0.832), Point(0.129, -2.622, 2.296, 0.833)]
-    # pw = pointsFind[1]
-    # answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
-    # print('\n', answer2,'\n', pw)
-    #
-    # points2 = [Point(-1.186, -3.128, 2.421, 0.655), Point(-0.757, -4.271, 2.59, 0.668)]
-    # pw = pointsFind[2]
-    # answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
-    # print('\n', answer2,'\n', pw)
-    #
-    # points2 = [Point(-1.778, -4.729, 2.6025, 0.76), Point(-1.246, -5.841, 2.754, 0.766)]
-    # pw = pointsFind[3]
-    # answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
-    # print('\n', answer2,'\n', pw)
+    points2 = [Point(0.0, 0.0, 1.732, 1), Point(1, -0.836, 1.913, 1)]
+    pw = pointsFind[0]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print('\n', answer2,'\n', pw)
+
+    points2 = [Point(-0.475, -1.568, 2.115, 0.832), Point(0.129, -2.622, 2.296, 0.833)]
+    pw = pointsFind[1]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print('\n', answer2,'\n', pw)
+
+    points2 = [Point(-1.186, -3.128, 2.421, 0.655), Point(-0.757, -4.271, 2.59, 0.668)]
+    pw = pointsFind[2]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print('\n', answer2,'\n', pw)
+
+    points2 = [Point(-1.778, -4.729, 2.6025, 0.76), Point(-1.246, -5.841, 2.754, 0.766)]
+    pw = pointsFind[3]
+    answer2 = m.calcSymbWithAngle(points2[1], points2[0], pw)
+    print('\n', answer2,'\n', pw)
 
     # m1 = {Point} <x:0.116 y:-2.6223 p:2.2972 q:0.8287 a1:7.4127 a2:2.8183>
     # m2 = {Point} <x:-0.4826 y:-1.5652 p:2.115 q:0.8264 a1:6.0191 a2:1.7892>
@@ -375,33 +374,30 @@ if __name__ == "__main__":
     # print(check)
 
     # add mass
-    mass = []
-    mass.append([])
-    leftNumber = 1
-    for i in range(0, length):
-        mass[0].append(Point(i * 0.5, 0, 1.732, 1))
-    # calculations
-    for i in range(0, length):
-        mass.append([])
-
-        if(len(mass)>=3 & i % 2 == 1):
-            m1 = mass[i][0]
-            m2 = mass[i-1][0]
-            # if(i>=3):
-            #     m1 = pointsFind[i-leftNumber-1]
-            #     m1Example = pointsFind[i-leftNumber-1] # Убрать дальше
-            find = pointsFind[i-leftNumber]
-            res = m.calcSymbWithAngle(m1, m2, find)
-            mass[i+1].append(res)
-            leftNumber = leftNumber + 1
-
-        for idx, point in enumerate(mass[i]):
-            if(idx + 1 >= len(mass[i])):
-                continue
-            prevPoint = mass[i][idx+1]
-            res = m.calcSymb3(prevPoint, point)
-            if(res != None):
-                mass[i+1].append(res)
-
-    showTable = ShowTable()
-    showTable.showTable(mass)
+    # mass = []
+    # mass.append([])
+    # leftNumber = 1
+    # for i in range(0, length):
+    #     mass[0].append(Point(i * 1, 0, 1.732, 1))
+    # # calculations
+    # for i in range(0, length+2):
+    #     mass.append([])
+    #
+    #     if(len(mass)>=3 & i % 2 == 1):
+    #         m1 = mass[i][0]
+    #         m2 = mass[i-1][0]
+    #         find = pointsFind[i-leftNumber]
+    #         res = m.calcSymbWithAngle(m1, m2, find)
+    #         mass[i+1].append(res)
+    #         leftNumber = leftNumber + 1
+    #
+    #     for idx, point in enumerate(mass[i]):
+    #         if(idx + 1 >= len(mass[i])):
+    #             continue
+    #         prevPoint = mass[i][idx+1]
+    #         res = m.calcSymb3(prevPoint, point)
+    #         if(res != None):
+    #             mass[i+1].append(res)
+    #
+    # showTable = ShowTable()
+    # showTable.showTable2(mass)
