@@ -1,4 +1,4 @@
-import platform
+import threading
 import wx
 import wx.grid
 from calculations.plasticityCriterion.CalcukationsMathcad2 import Mathcad
@@ -11,12 +11,13 @@ class ShowApplication(wx.Frame):
 
     def __init__(self):
         wx.Frame.__init__(
-            self, None, size=(680, 500), title='Расчет бортов карьеров на обрушения'
+            self, None, size=(680, 250), title='Расчет бортов карьеров на обрушения'
         )
         panel = wx.Panel(self)
+        self.colLabels = ["x", "y", "p", "q"]
 
         self.grid = wx.grid.Grid(panel, 6)
-        self.grid.CreateGrid(10, 4)
+        self.grid.CreateGrid(7, 4)
 
         self.button = wx.Button(panel, label="Расчет")
         self.lblAgle = wx.StaticText(panel, label="Угол:")
@@ -57,16 +58,20 @@ class ShowApplication(wx.Frame):
         self.editU.SetValue("1")
         self.editC.SetValue("1")
         self.editStep.SetValue("2")
-        self.editLength.SetValue("7")
+        self.editLength.SetValue("8")
         self.fillTable()
 
         self.Show()
+
+    def changeLength(self, id):
+        print(id)
 
     def fillTable(self):
         pointsFind = [Point(-0.475, -1.568, 2.115, 0.831, 6.015, 1.785),
                       Point(-1.186, -3.128, 2.421, 0.655, 8.422, 3.58),
                       Point(-1.778, -4.729, 2.02, 0.76, 9.998, 4.793),
                       Point(-2.241, -6.363, 2.767, 0.851, 11.528, 5.994)]
+        # self.grid.SetCel
         for i, point in enumerate(pointsFind):
             self.grid.SetCellValue(i, 0, str(point.getX()))
             self.grid.SetCellValue(i, 1, str(point.getY()))
@@ -75,25 +80,45 @@ class ShowApplication(wx.Frame):
             # https://stackoverflow.com/questions/17454775/changing-size-of-grid-when-grid-data-is-changed
 
     def getTable(self):
+        pointsFind = [Point(-0.475, -1.568, 2.115, 0.831, 6.015, 1.785),
+                      Point(-1.186, -3.128, 2.421, 0.655, 8.422, 3.58),
+                      Point(-1.778, -4.729, 2.02, 0.76, 9.998, 4.793),
+                      Point(-2.241, -6.363, 2.767, 0.851, 11.528, 5.994)]
+        q = self.grid.GetSelectedCells()
+        for i, point in enumerate(pointsFind):
+            self.grid.SetCellValue(i, 0, str(point.getX()))
+            self.grid.SetCellValue(i, 1, str(point.getY()))
+            self.grid.SetCellValue(i, 2, str(point.getP()))
+            self.grid.SetCellValue(i, 3, str(point.getQ()))
         return [Point(-0.475, -1.568, 2.115, 0.831, 6.015, 1.785),
                       Point(-1.186, -3.128, 2.421, 0.655, 8.422, 3.58),
                       Point(-1.778, -4.729, 2.02, 0.76, 9.998, 4.793),
                       Point(-2.241, -6.363, 2.767, 0.851, 11.528, 5.994)]
 
     def calculation(self, e):
-        self.grid.AppendRows()
+        # self.grid.AppendRows()
         print("Angle = ", self.editAgle.GetValue())
         print("U = ", self.editU.GetValue())
         print("C = ", self.editC.GetValue())
         print("Step = ", self.editStep.GetValue())
         print("Length = ", self.editLength.GetValue())
+
+        angle = float(self.editAgle.GetValue())
         length = int(self.editLength.GetValue())
         step = float(self.editStep.GetValue())
-        angle = float(self.editAgle.GetValue())
-
         pointsFind = self.getTable()
+        u = float(self.editU.GetValue())
+        C = float(self.editC.GetValue())
 
-        m = Mathcad(f=math.tan(angle*math.pi/180), u=float(self.editU.GetValue()))
+        # e1 = threading.Event()
+        # self.t1 = threading.Thread(target=self.calculations, args=(angle, u, C, step, length, pointsFind))
+        # self.t1.start()
+        # self.t1.join()
+        self.calculations(angle, u, C, step, length, pointsFind)
+
+
+    def calculations(self, angle, u, C, step, length, pointsFind):
+        m = Mathcad(f=math.tan(angle * math.pi / 180), u=u, C=C)
         mass = []
         mass.append([])
         leftNumber = 1
@@ -121,9 +146,6 @@ class ShowApplication(wx.Frame):
 
         showTable = ShowTable()
         showTable.showTable(mass)
-
-    def changeLength(self, id):
-        print(id)
 
 
 if __name__ == '__main__':

@@ -75,10 +75,9 @@ class ShowTable:
 
         for idPoints, points in enumerate(massPoints):
             for id, point in enumerate(points):
-
-                x.append(-point.getX())# высота
+                x.append(point.getX())# высота
                 y.append(point.getY())# длина
-                point.setTable(-point.getX(),point.getY())
+                point.setTable(point.getX(), point.getY())
 
         fig, ax = plt.subplots()
 
@@ -99,8 +98,6 @@ class ShowTable:
     def searchPoint(self, massPoints, y, x):
         for idPoints, points in enumerate(massPoints):
             for id, point in enumerate(points):
-                # if(x == point.getX() and y == point.getY()):
-                #     return point
                 try:
                     if (x == point.tableX and y == point.tableY):
                         return point

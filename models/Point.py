@@ -45,8 +45,8 @@ class Point:
 
     def __repr__(self):# 0.5777
         try:
-            return "<x:%s y:%s p:%s q:%s a1:%s b1:%s>" % (round(float(self.x),4), round(float(self.y),4), round(float(self.p),4),
-                                                      round(float(self.q),4), round(float(self.getAlpha(0.577)),4),round(float(self.getBetta(0.577)),4))
+            return "<x:%s y:%s p:%s q:%s a1:%s b1:%s>" % (round(float(self.x),3), round(float(self.y),3), round(float(self.p),3),
+                                                      round(float(self.q),3), round(float(self.getAlpha(0.577)),3),round(float(self.getBetta(0.577)),3))
         except Exception:
             print("Error")
 
