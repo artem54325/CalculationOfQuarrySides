@@ -1,9 +1,5 @@
 import math
-# from sympy import cos, sin, pi, tan
-from sympy.solvers import solve
-import numpy
 import sympy as sym
-import z3 as z3
 
 from calculations.views.ShowTable import ShowTable
 from models.Point import Point
@@ -168,10 +164,10 @@ class Mathcad:
                  (4 * (p - c) / f))
 
         # Четвертое уравнение
-        calc4 = (1 + (f * alpha))**(1/2) - p
+        calc4 = (1 + (f * alpha)/self.C)**(1/2) - p
 
         # Пятое уравнение
-        calc5 = ((p * p - 1) / f) - alpha
+        calc5 = self.C * ((p * p - 1) / f) - alpha
 
         # Шестое уравнение
         # calc6 = (alpha - 2 * p) - betta
@@ -253,7 +249,8 @@ if __name__ == "__main__":
     for i in range(0, length):
         mass[0].append(Point(i * 2, 0, 1.732, 1))
     # calculations
-    for i in range(0, length+2):
+    i=0
+    while(len(mass[i])!=0):
         mass.append([])
 
         if(len(mass)>=3 & i % 2 == 1):
@@ -273,6 +270,7 @@ if __name__ == "__main__":
             res = m.calcSymb3(prevPoint, point)
             if(res != None):
                 mass[i+1].append(res)
+        i=i+1
 
     showTable = ShowTable()
     showTable.showTable(mass)

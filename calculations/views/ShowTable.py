@@ -1,5 +1,4 @@
 
-import numpy as np
 import matplotlib.pyplot as plt
 import mplcursors
 
@@ -68,6 +67,10 @@ class ShowTable:
 
         # x - координаты точек
         # y - координаты точек
+        MainPaints = [[0,0],[2,0],[4,0],[6,0],[8,0],[1,-0.836],[3,-0.836],[]]
+        MainPaintsX = [0, 2, 4, 6, 8, 1, 3, 5 ,7 -0.475, 2, 4, 6, 0.129, 3, 5, -1.186, 0.738, 4, -0.757, 1.349, -1.778, -0.315, -1.246, -2.241]
+        MainPaintsY = [0, 0, 0, 0, 0, -0.836, -0.836, -0.836, -0.836, -1.568, -1.685, -1.685, -1.685, -2.]
+
         x = []
         y = []
         ky = 0
@@ -83,10 +86,12 @@ class ShowTable:
 
         ax.scatter(x, y, c='#ad09a3')  # цвет точек
 
+        # ax.scatter(MainPaintsX, MainPaintsY, c='r')  # цвет точек
+
         ax.set_title('Расчет бортов карьеров на обрушения')  # заголовок для Axes
 
-        fig.set_figwidth(8)  # ширина и
-        fig.set_figheight(8)  # высота "Figure"
+        fig.set_figwidth(6)  # ширина и
+        fig.set_figheight(6)  # высота "Figure"
 
         crs = mplcursors.cursor(ax, hover=True)
 
